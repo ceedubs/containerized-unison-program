@@ -33,7 +33,7 @@ ARG SHARE_USER
 ARG SHARE_NAMESPACE
 ARG TAG
 RUN mkdir -p "/usr/share/unisonapp"
-RUN TAG="${TAG}" curl -s "https://api.unison-lang.org/codebases/${SHARE_USER}/browse?relativeTo=${SHARE_NAMESPACE}" | jq -r .namespaceListingHash > "/usr/share/unisonapp/hash.txt"
+RUN TAG="${TAG}" curl -f -s "https://api.unison-lang.org/codebases/${SHARE_USER}/browse?relativeTo=${SHARE_NAMESPACE}" | jq -r .namespaceListingHash > "/usr/share/unisonapp/hash.txt"
 
 ################################################################################
 # compile-unison-application
