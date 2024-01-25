@@ -3,14 +3,16 @@
 ################################################################################
 
 # The handle of the Unison Share user who has published the code
-SHARE_USER := ceedubs
+SHARE_USER := unison
 
-# The namespace of the code, relative to the Unison Share user
-SHARE_NAMESPACE := public.hello_server.latest
+# The name of the project on Unison Share
+SHARE_PROJECT := httpserver
+
+PROJECT_RELEASE := 3.0.2
 
 # The name of the main function to run within the application. This will
 # generally have the type `'{Exception, IO} ()`.
-MAIN_FUNCTION := main
+MAIN_FUNCTION := example.main
 
 # Set this if you use a custom Docker repository.
 # NOTE: If you set this it should end with a trailing slash.
@@ -22,13 +24,11 @@ DOCKER_REPO :=
 ################################################################################
 
 
-DOCKER_IMAGES := base download-ucm fetch-unison-application-hash compile-unison-application unison-application
+DOCKER_IMAGES := base download-ucm compile-unison-application unison-application
 DOCKER_BUILD_TARGETS := $(addprefix docker-build-,$(DOCKER_IMAGES))
 DOCKER_PUSH_TARGETS := $(addprefix docker-push-,application)
 
-# The tag for the Docker images. This is used for cache invalidation, so it's important that it is
-# unique per build.
-TAG := $(shell date -u +'%F_%H-%M-%S')
+TAG := $(PROJECT_RELEASE)
 
 .PHONY: build clean print-tag push docker-build-% docker-push-%
 
@@ -39,7 +39,8 @@ docker-build-%:
 				 --build-arg TAG=$(TAG) \
 				 --build-arg DOCKER_REPO=$(DOCKER_REPO) \
 				 --build-arg SHARE_USER=$(SHARE_USER) \
-				 --build-arg SHARE_NAMESPACE=$(SHARE_NAMESPACE) \
+				 --build-arg SHARE_PROJECT=$(SHARE_PROJECT) \
+				 --build-arg PROJECT_RELEASE=$(PROJECT_RELEASE) \
 				 --build-arg MAIN_FUNCTION=$(MAIN_FUNCTION) \
 				 --tag $(DOCKER_REPO)$(TARGET):$(TAG) \
 				 --tag $(DOCKER_REPO)$(TARGET):latest \
