@@ -32,7 +32,7 @@ If you [containerize another Unison program](#configuration), then you may be ab
 
 To containerize another Unison program, you need to change a few configuration settings at the top of the [Makefile](Makefile):
 
-- `SHARE_USER` (default: `ceedubs`)
+- `SHARE_USER` (default: `unison`)
   - The handle of the Unison Share user who has published the code
 - `SHARE_PROJECT` (default: `httpserver`)
   - The name of the Unison Share project within the scope of the Unison Share user
