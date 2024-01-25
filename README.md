@@ -8,7 +8,7 @@ This repository pulls a [Unison][unison] program from [Unison Share][share], com
 make build
 ```
 
-This will print some Docker logs to the terminal and build some images. The main image that we care about will be named `unison-application` and will be now have a `latest` tag and a timestamp-based tag.
+This will print some Docker logs to the terminal and build some images. The main image that we care about will be named `unison-application` and will be now have a `latest` tag and a tag based on the release version of the Unison project that we are building.
 
 # Run the container
 
