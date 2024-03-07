@@ -6,7 +6,7 @@ ARG TAG
 # It's currently not easy to get Unison to run on Alpine. I'm using Debian, but
 # other distributions could be used.
 ################################################################################
-FROM debian as base
+FROM --platform=linux/amd64 debian as base
 RUN apt-get update && apt-get -y install ca-certificates
 
 ################################################################################
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get -y install ca-certificates
 #
 # Fetches a ucm release and installs it to `/usr/local/bin/ucm`.
 ################################################################################
-FROM ${DOCKER_REPO}base:${TAG} as download-ucm
+FROM --platform=linux/amd64 ${DOCKER_REPO}base:${TAG} as download-ucm
 
 ADD https://github.com/unisonweb/unison/releases/latest/download/ucm-linux.tar.gz /tmp/ucm-linux.tar.gz
 RUN tar -x -z -f /tmp/ucm-linux.tar.gz -C /usr/local/bin ./ucm
@@ -24,7 +24,7 @@ RUN tar -x -z -f /tmp/ucm-linux.tar.gz -C /usr/local/bin ./ucm
 #
 # Compiles the Unison program into a `.uc` file and stores it in `/usr/share/unisonapp/unisonapp.uc`.
 ################################################################################
-FROM ${DOCKER_REPO}base:${TAG} as compile-unison-application
+FROM --platform=linux/amd64 ${DOCKER_REPO}base:${TAG} as compile-unison-application
 RUN apt-get -y install gettext-base
 COPY --from=download-ucm /usr/local/bin/ucm /usr/local/bin/ucm
 COPY pull-and-compile.md.tpl /tmp/
@@ -42,7 +42,7 @@ RUN /usr/local/bin/ucm transcript /tmp/pull-and-compile.md
 #
 # The main image that runs the Unison program.
 ################################################################################
-FROM ${DOCKER_REPO}base:${TAG} as unison-application
+FROM --platform=linux/amd64 ${DOCKER_REPO}base:${TAG} as unison-application
 COPY --from=download-ucm /usr/local/bin/ucm /usr/local/bin/ucm
 COPY --from=compile-unison-application "/usr/share/unisonapp/unisonapp.uc" "/usr/share/unisonapp/unisonapp.uc" 
 
