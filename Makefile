@@ -6,13 +6,13 @@
 SHARE_USER := unison
 
 # The name of the project on Unison Share
-SHARE_PROJECT := httpserver
+SHARE_PROJECT := http
 
-PROJECT_RELEASE := 3.0.2
+PROJECT_RELEASE := 3.0.0
 
 # The name of the main function to run within the application. This will
 # generally have the type `'{Exception, IO} ()`.
-MAIN_FUNCTION := example.main
+MAIN_FUNCTION := server.example.main
 
 # Set this if you use a custom Docker repository.
 # NOTE: If you set this it should end with a trailing slash.

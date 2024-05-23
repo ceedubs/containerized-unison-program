@@ -16,8 +16,8 @@ RUN apt-get update && apt-get -y install ca-certificates
 ################################################################################
 FROM --platform=linux/amd64 ${DOCKER_REPO}base:${TAG} as download-ucm
 
-ADD https://github.com/unisonweb/unison/releases/latest/download/ucm-linux.tar.gz /tmp/ucm-linux.tar.gz
-RUN tar -x -z -f /tmp/ucm-linux.tar.gz -C /usr/local/bin ./ucm
+ADD https://github.com/unisonweb/unison/releases/download/release/0.5.20/ucm-linux.tar.gz /tmp/ucm-linux.tar.gz
+RUN mkdir -p /opt/unisonlanguage && tar -x -z -f /tmp/ucm-linux.tar.gz -C /opt/unisonlanguage
 
 ################################################################################
 # compile-unison-application
@@ -26,7 +26,7 @@ RUN tar -x -z -f /tmp/ucm-linux.tar.gz -C /usr/local/bin ./ucm
 ################################################################################
 FROM --platform=linux/amd64 ${DOCKER_REPO}base:${TAG} as compile-unison-application
 RUN apt-get -y install gettext-base
-COPY --from=download-ucm /usr/local/bin/ucm /usr/local/bin/ucm
+COPY --from=download-ucm /opt/unisonlanguage/unison/unison /usr/local/bin/ucm
 COPY pull-and-compile.md.tpl /tmp/
 ARG SHARE_USER
 ARG SHARE_NAMESPACE
@@ -43,7 +43,7 @@ RUN /usr/local/bin/ucm transcript /tmp/pull-and-compile.md
 # The main image that runs the Unison program.
 ################################################################################
 FROM --platform=linux/amd64 ${DOCKER_REPO}base:${TAG} as unison-application
-COPY --from=download-ucm /usr/local/bin/ucm /usr/local/bin/ucm
+COPY --from=download-ucm /opt/unisonlanguage/unison/unison /usr/local/bin/ucm
 COPY --from=compile-unison-application "/usr/share/unisonapp/unisonapp.uc" "/usr/share/unisonapp/unisonapp.uc" 
 
 ENTRYPOINT ["/usr/local/bin/ucm", "run.compiled", "/usr/share/unisonapp/unisonapp.uc"]
