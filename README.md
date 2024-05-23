@@ -34,7 +34,7 @@ To containerize another Unison program, you need to change a few configuration s
 
 - `SHARE_USER` (default: `unison`)
   - The handle of the Unison Share user who has published the code
-- `SHARE_PROJECT` (default: `httpserver`)
+- `SHARE_PROJECT` (default: `http`)
   - The name of the Unison Share project within the scope of the Unison Share user
 - `PROJECT_RELEASE` (default: `3.0.2`)
   - The release version of the Unison Share project.
